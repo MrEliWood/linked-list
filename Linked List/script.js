@@ -1,3 +1,4 @@
+// define node class
 class Node {
 	constructor(data) {
 		this.data = data;
@@ -5,14 +6,16 @@ class Node {
 	}
 }
 
+// define list class
 class LinkedList {
 	constructor() {
 		this.head = null;
+		this.size = 0;
 	}
 
 	// ADD NODE
 	add(data) {
-		// creat new node
+		// create new node
 		const node = new Node(data);
 
 		// define variable for storing current node
@@ -34,26 +37,35 @@ class LinkedList {
 			// add node
 			current.next = node;
 		}
+
+		// incriment the list size
+		this.size++;
 	}
 
-	// CALCULATE SIZE
-	size() {
-		// initialize count at 0
-		let count = 0;
+	// TRAVERSE LIST
+	traverse() {
+		let current;
 
-		// set head as starting node
-		let node = this.head;
+		// set current as the head
+		current = this.head;
+
+		// define string
+		let str = '';
 
 		// iterate over list
-		while (node) {
-			// increase count by 1
-			count++;
+		// adding each node's value to the string
+		while (current) {
+			if (current.next) {
+				str += current.data + ' -> ';
+			} else {
+				str += current.data;
+			}
 
-			// move pointer to next node
-			node = node.next;
+			current = current.next;
 		}
 
-		return count;
+		// print the string
+		console.log('LIST: ', str);
 	}
 
 	// CLEAR LIST OF ALL NODES
@@ -65,7 +77,7 @@ class LinkedList {
 	// FIND SPECIFIC INDEX
 	find(index) {
 		// initialize node as head
-		let node = this.head;
+		let current = this.head;
 
 		// initialize count at zero index
 		let count = 0;
@@ -73,88 +85,88 @@ class LinkedList {
 		// iterate over list
 		// setting node to next node
 		while (count !== index) {
-			node = node.next;
+			current = current.next;
 			count++;
 		}
 
-		return node;
+		// print the found node
+		console.log(current);
 	}
 
 	// INSERT AT SPECIFIC INDEX
 	insertAt(data, index) {
 		// validate index
-		if (index < 0 || index > this.size()) {
-			return console.log(`Please enter an index between 0 and ${this.size()}`);
+		if (index < 0 || index > this.size) {
+			return console.log(`Please enter an index between 0 and ${this.size}`);
+		}
+
+		// create new node
+		let node = new Node(data);
+
+		// set pointers
+		let current = this.head;
+		let previous;
+
+		// handle 0 index
+		if (index === 0) {
+			node.next = this.head;
+			this.head = node;
 		} else {
-			// create new node
-			let node = new Node(data);
+			// initialize count at zero
+			let count = 0;
 
-			// set pointers
-			let current = this.head;
-			let previous;
-
-			// handle 0 index
-			if (index === 0) {
-				node.next = this.head;
-				this.head = node;
-			} else {
-				// initialize count at zero
-				let count = 0;
-
-				// iterate over list
-				// until reaching index
-				while (count < index) {
-					count++;
-					previous = current;
-					current = current.next;
-				}
-
-				// set current as node's next
-				node.next = current;
-
-				// set node as the previous node's next
-				previous.next = node;
+			// iterate over list
+			// until reaching index
+			while (count < index) {
+				count++;
+				previous = current;
+				current = current.next;
 			}
+
+			// set current as node's next
+			node.next = current;
+
+			// set node as the previous node's next
+			previous.next = node;
 		}
 	}
 
 	// REMOVE FROM SPECIFIC INDEX
 	removeFrom(index) {
-		if (index < 0 || index > this.size()) {
-			return console.log(`Please enter an index between 0 and ${this.size()}`);
+		// set pointers
+		let current = this.head;
+		let previous = current;
+
+		// handle 0 index
+		if (index == 0) {
+			this.head = current.next;
 		} else {
-			// set pointers
-			let current = this.head;
-			let previous = current;
+			// initialize count at zero
+			let count = 0;
 
-			// handle 0 index
-			if (index === 0) {
-				this.head = current.next;
-			} else {
-				// initialize count at zero
-				let count = 0;
-
-				// iterate over list
-				// until reaching index
-				while (count < index) {
-					count++;
-					previous = current;
-					current = current.next;
-				}
-
-				// set the previous node's next to the current node's next
-				previous.next = current.next;
+			// iterate over list
+			// until reaching index
+			while (count < index) {
+				count++;
+				previous = current;
+				current = current.next;
 			}
 
-			return current.data;
+			// set the previous node's next to the current node's next
+			previous.next = current.next;
 		}
+
+		// print the deleted node
+		console.log(current.data);
 	}
 }
 
 const list = new LinkedList();
 
-list.add('This is the FIRST node!');
-list.add('This is the SECOND node!');
-list.add('This is the LAST node!');
+list.add('FIRST');
+list.add('SECOND');
+list.add('THIRD');
 
-console.log(list);
+list.traverse();
+
+console.log('RAW LIST: ', list);
